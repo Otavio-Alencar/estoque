@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin;
+use App\Models\Manufacturer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,6 +20,10 @@ class RepresentativeFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'phone' => $this->faker->phoneNumber(),
+            'admin_id' => Admin::all()->random()->id,
+            'manufacturer_id' => Manufacturer::all()->random()->id,
         ];
     }
 }

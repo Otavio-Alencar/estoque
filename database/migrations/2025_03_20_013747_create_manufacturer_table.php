@@ -3,8 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Representative;
 
+use App\Models\Admin;
 return new class extends Migration
 {
     /**
@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('address');
             $table->string('phone');
             $table->string('cnpj');
-            $table->foreignIdFor(Representative::class)->references('id')->on('representatives');
+            $table->foreignIdFor(Admin::class)->references('id')->on('admin');
+
         });
     }
 
@@ -29,9 +30,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('manufacturers', function (Blueprint $table) {
-            $table->dropForeignIdFor(Representative::class);
-        });
+
         Schema::dropIfExists('manufacturer');
     }
 };

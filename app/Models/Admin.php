@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Admin extends Authenticatable
 {
     protected $table = 'admin';
@@ -45,5 +45,18 @@ class Admin extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function Items():HasMany{
+        return $this->hasMany(Item::class);
+    }
+    public function Manufacturer():HasMany{
+        return $this->hasMany(Manufacturer::class);
+    }
+    public function Product():HasMany{
+        return $this->hasMany(Product::class);
+    }
+    public function Representative():HasMany{
+        return $this->hasMany(Representative::class);
     }
 }

@@ -4,13 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Manufacturer extends Model
 {
 
     use HasFactory;
     /** @use HasFactory<\Database\Factories\ManufacturerFactory> */
-    public function representative(){
-        return $this->belongsTo(Representative::class);
+
+
+    public function admin():belongsTo{
+        return $this->belongsTo(Admin::class);
+    }
+
+    public function representative():HasMany{
+        return $this->hasMany(Representative::class);
     }
 }

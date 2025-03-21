@@ -2,7 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Representative;
+use App\Models\Admin;
+
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,10 +18,7 @@ class ManufacturerFactory extends Factory
      */
     public function definition(): array
     {
-        $representative = null;
-        if (Representative::all()->count() > 0) {
-            $representative = Representative::all()->random()->id;
-        }
+
 
         return [
             'name' => $this->faker->name(),
@@ -28,7 +26,7 @@ class ManufacturerFactory extends Factory
             'address' => $this->faker->address(),
             'phone' => $this->faker->phoneNumber(),
             'cnpj' => $this->faker->numerify('##.###.###/####-##'),
-            'representative_id' => $representative
+            'admin_id' => Admin::all()->random()->id
         ];
     }
 }
