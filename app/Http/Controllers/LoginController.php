@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\library\Authenticate;
+use App\Models\Admin;
+use App\library\GoogleClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -11,8 +15,8 @@ class LoginController extends Controller
         return view('login');
     }
     public function showlogupform(Request $request){
-    return view('register');
-}
+        return view('register');
+    }
 
 
     public function login(Request $request){
@@ -20,24 +24,64 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:5'
         ]);
-
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
             return redirect()->intended('/');
         }
 
+
+
         return back()->withErrors(['Usuario ou senha incorretos.']);
 
     }
-    public  function  logup(Request $request){
+    public function redirectToGoogle()
+    {
+        $googleClient = new GoogleClient();
+        $googleClient->init();
+
+        return redirect()->to($googleClient->generateLink());
+    }
+
+    public function handleGoogleCallback(Request $request)
+    {
+        $googleClient = new GoogleClient();
+        $googleClient->init();
+
+        if ($googleClient->authenticated()) {
+            $auth = new \App\library\Authenticate();
+            $user = $auth->authGoogle($googleClient->getData());
+
+            Auth::login($user);
+            $request->session()->regenerate();
+
+            return redirect()->intended('/');
+        }
+
+        return redirect('/entrar')->withErrors(['Erro ao autenticar com o Google.']);
+    }
+
+
+    public  function logup(Request $request){
         $request->validate([
-            'name' => 'required|min:3',
+            'username' => 'required|min:3',
             'email' => 'required|email',
-            'password' => 'required|min:5'
+            'password' => 'required|min:5',
+            'retype_password' => 'required|same:password'
         ]);
-
-        return redirect()->back();
-
+        $username = $request->input('username');
+        $email = $request->input('email');
+        $password = Hash::make($request->input('password'));
+        $user = [
+            'name' => $username,
+            'email' => $email,
+            'password' => $password
+        ];
+        try{
+            $admin = Admin::insert($user);
+            return redirect('/entrar');
+        }catch (\Exception $e){
+            return back()->withErrors(['Já existe um usuario com esse email.']);
+        }
 
     }
 }

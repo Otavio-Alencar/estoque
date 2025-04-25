@@ -5,6 +5,7 @@
             <p class="login-box-msg">Register a new membership</p>
 
             <form action="{{ route('logup')  }}" method="post">
+                @csrf
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="username" placeholder="Full name">
                     <div class="input-group-append">
@@ -30,13 +31,22 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Retype password">
+                    <input type="password" class="form-control" name="retype_password" placeholder="Retype password">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
                 </div>
+                @if ($errors->any())
+                    <div class="alert alert-danger text-left">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="row">
                     <div class="col-8">
                         <div class="icheck-primary">
@@ -55,17 +65,14 @@
             </form>
 
             <div class="social-auth-links text-center">
-                <a href="#" class="btn btn-block btn-primary">
-                    <i class="fab fa-facebook mr-2"></i>
-                    Sign up using Facebook
-                </a>
-                <a href="#" class="btn btn-block btn-danger">
+
+                <a href="{{ url('/auth/google')}}" class="btn btn-block btn-danger">
                     <i class="fab fa-google-plus mr-2"></i>
                     Sign up using Google+
                 </a>
             </div>
 
-            <a href="login.html" class="text-center">I already have a membership</a>
+            <a href="{{ route('login') }}" class="text-center">I already have a membership</a>
         </div>
         <!-- /.form-box -->
 

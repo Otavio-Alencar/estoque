@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    {{ print_r($credentials)}}
+    <p>{{ $name }}</p>
+    <p>{{ $email }}</p>
 </body>
 </html>
