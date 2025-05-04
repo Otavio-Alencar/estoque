@@ -17,9 +17,9 @@ class Item extends Model
        return $this->belongsTo(Admin::class);
    }
    public function product():belongsTo{
-       return $this->belongsTo(Product::class);
+       return $this->belongsTo(Product::class,'product_code','code');
    }
    public function manufacturer():belongsTo{
-       return $this->belongsTo(Manufacturer::class);
+       return $this->belongsTo(Manufacturer::class,'manufacturer_id','id');
    }
 }

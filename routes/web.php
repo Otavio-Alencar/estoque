@@ -4,8 +4,9 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 
-Route::get('/', [MenuController::class, 'index']);
-
+Route::get('/', [MenuController::class, 'index'])->name('home');
+Route::get('/produtos', [MenuController::class, 'products'])->name('products');
+Route::get('/produtos/adicionar', [MenuController::class, 'addproducts'])->name('addProduct');
 Route::get('entrar', [LoginController::class, 'showLoginForm'])->name('login');
 
 

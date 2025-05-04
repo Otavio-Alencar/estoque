@@ -66,15 +66,30 @@ class LoginController extends Controller
             'username' => 'required|min:3',
             'email' => 'required|email',
             'password' => 'required|min:5',
-            'retype_password' => 'required|same:password'
+            'retype_password' => 'required|same:password',
+            'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048'
         ]);
         $username = $request->input('username');
         $email = $request->input('email');
         $password = Hash::make($request->input('password'));
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            // Criar nome único para imagem
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+
+            // Mover para public/dist/img
+            $image->move(public_path('dist/img'), $imageName);
+
+            $imagePath = 'dist/img/' . $imageName;
+        } else {
+            $imagePath = null;
+        }
         $user = [
             'name' => $username,
             'email' => $email,
-            'password' => $password
+            'password' => $password,
+            'image' => $imagePath
         ];
         try{
             $admin = Admin::insert($user);

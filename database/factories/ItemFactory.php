@@ -22,9 +22,10 @@ class ItemFactory extends Factory
         return [
             'quantity' => $this->faker->randomDigit(),
             'quantity_sold' => $this->faker->randomDigit(),
-            'purchase_value' => $this->faker->randomDigit(),
-            'sale_value' => $this->faker->randomDigit(),
-            'purchase_date' => $this->faker->date(),
+            'purchase_value' => $this->faker->randomFloat(2,10,30),
+            'sale_value' => $this->faker->randomFloat(2,10,30),
+            'purchase_date' => $this->faker->dateTimeBetween('2025-01-01', '2025-12-31')->format('Y-m-d'),
+            'sale_date' => $this->faker->dateTimeBetween('2025-01-01', '2025-12-31')->format('Y-m-d'),
             'due_date' => $this->faker->date(),
             'ativo' => $this->faker->randomDigit(),
             'product_code' => Product::all()->random()->code,

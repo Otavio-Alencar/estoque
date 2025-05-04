@@ -21,6 +21,7 @@ return new class extends Migration
             $table->float('purchase_value');
             $table->float('sale_value');
             $table->date('purchase_date');
+            $table->date('sale_date')->nullable();
             $table->string('product_code');
             $table->date('due_date');
             $table->integer('ativo');

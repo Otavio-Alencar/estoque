@@ -12,13 +12,19 @@ class Authenticate
 
         if (!$user) {
             $user = Admin::create([
-                'name' => $data->givenName ?? $data->name, // usa um fallback se `givenName` não existir
+                'name' => $data->givenName ?? $data->name,
                 'email' => $data->email,
-                'password' => bcrypt(str()->random(16)), // senha aleatória segura, já que o login é via Google
+                'password' => bcrypt(str()->random(16)),
+                'image' => $data->picture,
+            ]);
+        } else {
+            $user->update([
+                'name' => $data->givenName ?? $data->name,
+                'image' => $data->picture,
             ]);
         }
 
-        return $user; // importante: retornar o modelo Admin
+        return $user;
     }
 
 

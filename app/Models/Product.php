@@ -10,7 +10,9 @@ class Product extends Model
 {
     use HasFactory;
     /** @use HasFactory<\Database\Factories\ProductFactory> */
-
+    protected $fillable = [
+        'name',
+    ];
     public function admin():belongsTo{
         return $this->belongsTo(Admin::class);
     }

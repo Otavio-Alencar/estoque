@@ -1,12 +1,19 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
-</head>
-<body>
-    <p>{{ $name }}</p>
-    <p>{{ $email }}</p>
-</body>
-</html>
+@extends('HomeLayout.head')
+
+@section('title', 'Home')
+
+@section('content')
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
+
+    @include("HomeLayout.header")
+    @include("HomeLayout.mainSidebar")
+    @include("HomeLayout.homeContentWrapper")
+    @include("HomeLayout.footer")
+    @include("components.chart")
+
+@endsection
+
+

@@ -4,7 +4,7 @@
         <div class="card-body">
             <p class="login-box-msg">Register a new membership</p>
 
-            <form action="{{ route('logup')  }}" method="post">
+            <form action="{{ route('logup')  }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="username" placeholder="Full name">
@@ -38,6 +38,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" name="image"  accept="image/png, image/jpeg" >
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-image"></span>
+                        </div>
+                    </div>
+
+                </div>
                 @if ($errors->any())
                     <div class="alert alert-danger text-left">
                         <ul>
@@ -66,7 +75,7 @@
 
             <div class="social-auth-links text-center">
 
-                <a href="{{ url('/auth/google')}}" class="btn btn-block btn-danger">
+                <a href="{{ url('/auth/google') }}" class="btn btn-block btn-danger">
                     <i class="fab fa-google-plus mr-2"></i>
                     Sign up using Google+
                 </a>
