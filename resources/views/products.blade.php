@@ -1,15 +1,10 @@
-@extends('HomeLayout.head')
+@extends('baseLayout.layout')
 
 @section('title', 'Produtos')
 
 @section('content')
-
-    @include("HomeLayout.header")
-    @include("HomeLayout.mainSidebar")
-    @include("HomeLayout.productsContentWrapper")
-
-    @include("HomeLayout.footer")
-    @include("components.table")
+    @include("productsComponent.productsContentWrapper")
+    @include("extraComponents.table")
 
 @endsection
 

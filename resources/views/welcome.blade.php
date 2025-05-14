@@ -1,4 +1,4 @@
-@extends('HomeLayout.head')
+@extends('baseLayout.layout')
 
 @section('title', 'Home')
 
@@ -8,11 +8,10 @@
         <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
     </div>
 
-    @include("HomeLayout.header")
-    @include("HomeLayout.mainSidebar")
-    @include("HomeLayout.homeContentWrapper")
-    @include("HomeLayout.footer")
-    @include("components.chart")
+
+    @include("homeComponents.homeContentWrapper")
+
+    @include("extraComponents.chart")
 
 @endsection
 

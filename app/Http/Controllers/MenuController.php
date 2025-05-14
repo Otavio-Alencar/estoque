@@ -86,30 +86,5 @@ class MenuController extends Controller
         ]);
     }
 
-    public function products(Request $request){
-        if(!Auth::check()){
-            return redirect('/entrar');
-        }
-        if(session()->has('admin')){
 
-        }
-        $user = Auth::user();
-        $name  = $user->name;
-        $id = Auth::id();
-        $produtos = Item::where('admin_id',$id)->with('product')->with('manufacturer')->get();
-
-        return view('products',['name' => $name,'produtos' => $produtos]);
-    }
-
-    public function addproduct(Request $request){
-        if(!Auth::check()){
-            return redirect('/entrar');
-        }
-        if(session()->has('admin')){
-
-        }
-        $user = Auth::user();
-        $name  = $user->name;
-        return view('addproducts',['name' => $name]);
-    }
 }

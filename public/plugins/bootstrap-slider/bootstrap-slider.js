@@ -1,5 +1,5 @@
 /*! =======================================================
-                      VERSION  11.0.2              
+                      VERSION  11.0.2
 ========================================================= */
 "use strict";
 
@@ -575,7 +575,7 @@ var windowIsDefined = (typeof window === "undefined" ? "undefined" : _typeof(win
 				sliderTooltipMax.setAttribute('role', 'presentation');
 				createAndAppendTooltipSubElements(sliderTooltipMax);
 
-				/* Append components to sliderElem */
+				/* Append extraComponents to sliderElem */
 				this.sliderElem.appendChild(sliderTrack);
 				this.sliderElem.appendChild(sliderTooltip);
 				this.sliderElem.appendChild(sliderTooltipMin);

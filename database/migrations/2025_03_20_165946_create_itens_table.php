@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->integer('quantity');
-            $table->integer('quantity_sold');
+            $table->integer('quantity_sold')->default(0);
             $table->float('purchase_value');
             $table->float('sale_value');
             $table->date('purchase_date');
@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('product_code');
             $table->date('due_date');
             $table->integer('ativo');
-            $table->foreign('product_code')->references('code')->on('products');
-            $table->foreignIdFor(Manufacturer::class)->references('id')->on('manufacturers');
+            $table->foreign('product_code')->references('code')->on('products')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignIdFor(Manufacturer::class)->references('id')->on('manufacturers')->onDelete('cascade');
             $table->foreignIdFor(Admin::class)->references('id')->on('admin');
         });
     }

@@ -6954,7 +6954,7 @@ __webpack_require__(561);
   } else {}
 })(void 0, function (CryptoJS) {
   /**
-   * Cipher core components.
+   * Cipher core extraComponents.
    */
   CryptoJS.lib.Cipher || function (undefined) {
     // Shortcuts
@@ -7869,7 +7869,7 @@ __webpack_require__(561);
   /*globals window, global, require*/
 
   /**
-   * CryptoJS core components.
+   * CryptoJS core extraComponents.
    */
   var CryptoJS = CryptoJS || function (Math, undefined) {
     var crypto; // Native crypto from window (Browser)
@@ -19584,12 +19584,12 @@ var PNGImage = /*#__PURE__*/function () {
 
       if (this.image.transparency.grayscale != null) {
         // Use Color Key Masking (spec section 4.8.5)
-        // An array with N elements, where N is two times the number of color components.
+        // An array with N elements, where N is two times the number of color extraComponents.
         var val = this.image.transparency.grayscale;
         this.obj.data['Mask'] = [val, val];
       } else if (this.image.transparency.rgb) {
         // Use Color Key Masking (spec section 4.8.5)
-        // An array with N elements, where N is two times the number of color components.
+        // An array with N elements, where N is two times the number of color extraComponents.
         var rgb = this.image.transparency.rgb;
         var mask = [];
 
@@ -56749,8 +56749,8 @@ var maxp = new r.Struct({
   maxSizeOfInstructions: r.uint16,
   // Maximum byte count for glyph instructions
   maxComponentElements: r.uint16,
-  // Maximum number of components referenced at “top level” for any composite glyph
-  maxComponentDepth: r.uint16 // Maximum levels of recursion; 1 for simple components
+  // Maximum number of extraComponents referenced at “top level” for any composite glyph
+  maxComponentDepth: r.uint16 // Maximum levels of recursion; 1 for simple extraComponents
 
 });
 /**
@@ -64098,7 +64098,7 @@ function decompose(glyphs, i, font) {
   var t = T_BASE + s % T_COUNT;
   s = s / T_COUNT | 0;
   var l = L_BASE + s / V_COUNT | 0;
-  var v = V_BASE + s % V_COUNT; // Don't decompose if all of the components are not available
+  var v = V_BASE + s % V_COUNT; // Don't decompose if all of the extraComponents are not available
 
   if (!font.hasGlyphForCodePoint(l) || !font.hasGlyphForCodePoint(v) || t !== T_BASE && !font.hasGlyphForCodePoint(t)) {
     return i;
@@ -65859,9 +65859,9 @@ var GSUBProcessor = /*#__PURE__*/function (_OTProcessor) {
             //   GPOS will fail to correctly position the mark ligature on top of the
             //   LAM,LAM,HEH ligature. See https://bugzilla.gnome.org/show_bug.cgi?id=676343
             //
-            // - If a ligature is formed of components that some of which are also ligatures
-            //   themselves, and those ligature components had marks attached to *their*
-            //   components, we have to attach the marks to the new ligature component
+            // - If a ligature is formed of extraComponents that some of which are also ligatures
+            //   themselves, and those ligature extraComponents had marks attached to *their*
+            //   extraComponents, we have to attach the marks to the new ligature component
             //   positions!  Now *that*'s tricky!  And these marks may be following the
             //   last component of the whole sequence, so we should loop forward looking
             //   for them and update them.
@@ -65885,12 +65885,12 @@ var GSUBProcessor = /*#__PURE__*/function (_OTProcessor) {
             var lastNumComps = _curGlyph.codePoints.length;
             var curComps = lastNumComps;
             var idx = this.glyphIterator.index + 1; // Set ligatureID and ligatureComponent on glyphs that were skipped in the matched sequence.
-            // This allows GPOS to attach marks to the correct ligature components.
+            // This allows GPOS to attach marks to the correct ligature extraComponents.
 
             for (var _iterator62 = _createForOfIteratorHelperLoose(matched), _step62; !(_step62 = _iterator62()).done;) {
               var matchIndex = _step62.value;
 
-              // Don't assign new ligature components for mark ligatures (see above)
+              // Don't assign new ligature extraComponents for mark ligatures (see above)
               if (isMarkLigature) {
                 idx = matchIndex;
               } else {
@@ -65906,7 +65906,7 @@ var GSUBProcessor = /*#__PURE__*/function (_OTProcessor) {
               lastNumComps = this.glyphs[idx].codePoints.length;
               curComps += lastNumComps;
               idx++; // skip base glyph
-            } // Adjust ligature components for any marks following
+            } // Adjust ligature extraComponents for any marks following
 
 
             if (lastLigID && !isMarkLigature) {
@@ -67317,7 +67317,7 @@ var TTFGlyph = /*#__PURE__*/function (_Glyph) {
 
     return val;
   } // Decodes the glyph data into points for simple glyphs,
-  // or components for composite glyphs
+  // or extraComponents for composite glyphs
   ;
 
   _proto34._decode = function _decode() {
@@ -69211,7 +69211,7 @@ var TTFSubset = /*#__PURE__*/function (_Subset) {
     var stream = this.font._getTableStream('glyf');
 
     stream.pos += curOffset;
-    var buffer = stream.readBuffer(nextOffset - curOffset); // if it is a compound glyph, include its components
+    var buffer = stream.readBuffer(nextOffset - curOffset); // if it is a compound glyph, include its extraComponents
 
     if (glyf && glyf.numberOfContours < 0) {
       buffer = Buffer.from(buffer);

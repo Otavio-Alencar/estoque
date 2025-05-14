@@ -23,8 +23,8 @@
                 <div class="col-12">
                     <div class="d-flex w-100">
                         <button type="button" onclick="window.location.href='{{ route('addProduct') }}'" class="btn btn-primary flex-fill">Adicionar Produto</button>
-                        <button type="button" class="btn btn-success flex-fill ml-2">Editar Produto</button>
-                        <button type="button" class="btn btn-danger flex-fill ml-2">Excluir Produto</button>
+                        <button type="button" onclick="window.location.href='{{ route('productCodeEdit') }}'"  class="btn btn-success flex-fill ml-2">Editar Produto</button>
+                        <button type="button" onclick="window.location.href='{{ route('productCodeDelete') }}'" class="btn btn-danger flex-fill ml-2">Excluir Produto</button>
                     </div>
                     <div class="card mt-3">
                         <div class="card-header">

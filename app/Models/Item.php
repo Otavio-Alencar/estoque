@@ -13,6 +13,18 @@ class Item extends Model
 
    protected $table = 'items';
 
+    protected $fillable = [
+        'quantity',
+        'quantity_sold',
+        'purchase_value',
+        'sale_value',
+        'purchase_date',
+        'product_code',
+        'due_date',
+        'ativo',
+        'manufacturer_id',
+        'admin_id',
+    ];
    public function admin():belongsTo{
        return $this->belongsTo(Admin::class);
    }

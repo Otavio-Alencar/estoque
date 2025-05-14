@@ -1,8 +1,8 @@
 @extends('baseLayout.layout')
 
-@section('title', 'Adicionar')
+@section('title', 'Excluir')
 
 @section('content')
-    @include("productsComponent.addProductsContentWrapper")
+    @include("productsComponent.productCodeEdit")
     @include("extraComponents.inputMask")
 @endsection

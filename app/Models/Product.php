@@ -10,8 +10,13 @@ class Product extends Model
 {
     use HasFactory;
     /** @use HasFactory<\Database\Factories\ProductFactory> */
+    protected $primaryKey = 'code';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = [
         'name',
+        'code',
+        'admin_id',
     ];
     public function admin():belongsTo{
         return $this->belongsTo(Admin::class);

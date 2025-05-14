@@ -12,7 +12,14 @@ class Manufacturer extends Model
 
     use HasFactory;
     /** @use HasFactory<\Database\Factories\ManufacturerFactory> */
-
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'address',
+        'cnpj',
+        'admin_id'
+    ];
 
     public function admin():belongsTo{
         return $this->belongsTo(Admin::class);
