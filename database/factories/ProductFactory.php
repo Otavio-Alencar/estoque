@@ -20,7 +20,7 @@ class ProductFactory extends Factory
         return [
             'code' => $this->faker->numerify('##########'),
             'name' => $this->faker->word(),
-            'admin_id' => Admin::all()->random()->id,
+            'admin_id' => 1,
         ];
     }
 }

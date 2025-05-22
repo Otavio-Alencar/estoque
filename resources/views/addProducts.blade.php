@@ -4,5 +4,7 @@
 
 @section('content')
     @include("productsComponent.addProductsContentWrapper")
-    @include("extraComponents.inputMask")
+    @section('scripts')
+        @include("extraComponents.inputMask")
+    @endsection
 @endsection

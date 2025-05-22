@@ -51,7 +51,7 @@ class MenuController extends Controller
             $labels[] = $inicio->translatedFormat('F');
             $vendas = DB::table('items')
                 ->where('admin_id', $userId)
-                ->whereBetween('sale_date', [$inicio, $fim])
+//                ->whereBetween('sale_date', [$inicio, $fim])
                 ->select(DB::raw('SUM(sale_value * quantity_sold) as total'))
                 ->value('total');
 

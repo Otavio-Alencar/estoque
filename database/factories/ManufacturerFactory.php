@@ -26,7 +26,7 @@ class ManufacturerFactory extends Factory
             'address' => $this->faker->address(),
             'phone' => $this->faker->phoneNumber(),
             'cnpj' => $this->faker->numerify('##.###.###/####-##'),
-            'admin_id' => Admin::all()->random()->id
+            'admin_id' => 1
         ];
     }
 }

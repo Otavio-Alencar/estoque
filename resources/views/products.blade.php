@@ -4,7 +4,9 @@
 
 @section('content')
     @include("productsComponent.productsContentWrapper")
-    @include("extraComponents.table")
 
+    @section('scripts')
+        @include("extraComponents.table")
+    @endsection
 @endsection
 

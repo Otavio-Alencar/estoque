@@ -4,10 +4,11 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\SaleController;
 Route::get('/', [MenuController::class, 'index'])->name('home');
-
+Route::get('/estoque',[SaleController::class,'sales'])->name('sales');
 Route::get('/produtos', [ProductController::class, 'products'])->name('products');
+Route::post('/estoque',[SaleController::class,'saleRegister'])->name('saleRegister');
 
 Route::get('/produtos/adicionar', [ProductController::class, 'showAddProduct'])->name('addProduct');
 Route::post('/produtos/adicionar', [ProductController::class, 'addProducts'])->name('storeProduct');

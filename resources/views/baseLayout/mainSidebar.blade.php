@@ -52,14 +52,14 @@
                         </p>
                     </a>
                 </li>
-{{--                <li class="nav-item">--}}
-{{--                    <a href="{{ route('sales') }}" class="nav-link {{ request()->is('produtos*') ? 'active' : '' }}">--}}
-{{--                        <i class="nav-icon fas fa-dollar-sign"></i>--}}
-{{--                        <p>--}}
-{{--                            Vendas--}}
-{{--                        </p>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
+                <li class="nav-item">
+                    <a href="{{ route('sales') }}" class="nav-link {{ request()->is('estoque*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-dollar-sign"></i>
+                        <p>
+                          Estoque
+                       </p>
+                 </a>
+               </li>
 
             </ul>
         </nav>

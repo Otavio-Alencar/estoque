@@ -30,7 +30,7 @@ class ItemFactory extends Factory
             'ativo' => $this->faker->randomDigit(),
             'product_code' => Product::all()->random()->code,
             'manufacturer_id' => Manufacturer::all()->random()->id,
-            'admin_id' => Admin::all()->random()->id,
+            'admin_id' => 1,
         ];
     }
 }

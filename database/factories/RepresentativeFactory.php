@@ -22,7 +22,7 @@ class RepresentativeFactory extends Factory
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
-            'admin_id' => Admin::all()->random()->id,
+            'admin_id' => 1,
             'manufacturer_id' => Manufacturer::all()->random()->id,
         ];
     }

@@ -1,10 +1,10 @@
 @extends('baseLayout.layout')
 
-@section('title', 'Excluir')
+@section('title', 'Estoque')
 
 @section('content')
-    @include("productsComponent.productCodeEdit")
+    @include('salesComponents.salesContentWrapper')
     @section('scripts')
         @include("extraComponents.inputMask")
-    @endsection
+    @endsections
 @endsection
