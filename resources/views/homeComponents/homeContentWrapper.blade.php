@@ -21,68 +21,7 @@
     <section class="content">
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
-            <div class="row">
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3>{{ $itensQuantity }}</h3>
-
-                            <p>Produtos Registrados</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-bag"></i>
-                        </div>
-                        <a href="{{ route('products') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3> {{ $investimentos }} R$</h3>
-
-                            <p>Investimento</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3>{{ $lucro }} R$</h3>
-
-                            <p>Lucro</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-cash"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-6">
-                    <!-- small box -->
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3> {{ $manufacturerQuantity }}</h3>
-
-                            <p>Fornecedores</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
-                        </div>
-                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- ./col -->
-            </div>
+            @include('homeComponents.informations');
 
 
 
@@ -117,44 +56,8 @@
                     </div>
 
                 </section>
+                @include('homeComponents.profile');
 
-                <section class="col-lg-6 connectedSortable">
-                    <div class="">
-                        <!-- Widget: user widget style 1 -->
-                        <div class="card card-widget widget-user shadow">
-                            <!-- Add the bg color to the header using any of the bg-* classes -->
-                            <div class="widget-user-header bg-info">
-                                <h3 class="widget-user-username">{{ Auth::user()->name }}</h3>
-                                <h5 class="widget-user-desc">Administrador</h5>
-                            </div>
-                            <div class="widget-user-image">
-                                <img class="img-circle elevation-2" src="{{ Auth::user()->image ?? 'dist/img/avatar.png' }}" alt="User Avatar">
-                            </div>
-                            <div class="card-footer">
-                                <div class="row justify-content-center">
-                                    <div class="col-sm-4 border-right">
-                                        <div class="description-block">
-                                            <h5 class="description-header">{{ $quantitySold }}</h5>
-                                            <span class="description-text">vendas</span>
-                                        </div>
-                                        <!-- /.description-block -->
-                                    </div>
-
-                                    <div class="col-sm-4">
-                                        <div class="description-block">
-                                            <h5 class="description-header">{{ $itensQuantity }}</h5>
-                                            <span class="description-text">Produtos</span>
-                                        </div>
-                                        <!-- /.description-block -->
-                                    </div>
-                                    <!-- /.col -->
-                                </div>
-                                <!-- /.row -->
-                            </div>
-                        </div>
-                        <!-- /.widget-user -->
-                    </div>
-                </section>
                 <!-- right col -->
             </div>
             <!-- /.row (main row) -->

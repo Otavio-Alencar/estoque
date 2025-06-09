@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SaleController extends Controller
 {
@@ -23,9 +25,10 @@ class SaleController extends Controller
         $name  = $user->name;
         $items = Item::where('admin_id', $id)->get();
         $products = Product::where('admin_id', $id)->get();
-        $alertItem = $items->whereBetween('quantity', [3, 6]);
-        $dangerItem = $items->where('quantity', '<', 3);
-        return view('sales',['name' => $name,'alertItems' => $alertItem,'dangerItems' => $dangerItem,'products' => $products]);
+        $alertItem = $items->whereBetween('quantity', [1, 6]);
+        $dangerItem = $items->where('quantity', '==', 0);
+        $sales = Sale::all();
+        return view('sales',['name' => $name,'alertItems' => $alertItem,'dangerItems' => $dangerItem,'products' => $products,'sales' => $sales]);
     }
     public function saleRegister(Request $request){
         if(!Auth::check()){
@@ -41,30 +44,15 @@ class SaleController extends Controller
             'produto.exists' => 'O produto selecionado não é válido.',
             'comprovante.mimes' => 'O comprovante deve ser uma imagem ou um PDF.',
         ]);
+
         try{
             DB::beginTransaction();
-            $product = Product::where('code',$request->produto)->first();
-            $item = Item::where('product_code',$request->produto)->first();
-            $manufacturer = Manufacturer::where('id',$item->manufacturer_id)->first();
-            if ($request->hasFile('comprovante')) {
-                $comprovante = $request->file('comprovante');
 
-                // Criar nome único para imagem
-                $comprovanteName = time() . '_' . uniqid() . '.' . $comprovante->getClientOriginalExtension();
+            $product = Product::where('code',$request->produto)->firstOrFail();
+            $item = Item::where('product_code',$request->produto)->firstOrFail();
+            $manufacturer = Manufacturer::where('id',$item->manufacturer_id)->firstOrFail();
 
-                // Mover para public/dist/img
-                $comprovante->move(public_path('dist/comprovantes'), $comprovanteName);
-
-                $comprovantePath = 'dist/img/' . $comprovanteName;
-            } else {
-                DB::rollBack();
-                return back()->withInput()->withErrors(['error' => 'Erro ao registrar comprovante']);
-            }
-
-            if(!$item || !$manufacturer){
-                DB::rollBack();
-                return back()->withInput()->withErrors(['error' => 'Erro ao registrar venda']);
-            }
+            $comprovantePath = $this->storeProof($request->file('comprovante'));
             if($item->quantity <= 0){
                 DB::rollBack();
                 return back()->withInput()->withErrors(['error' => 'O produto está esgotado']);
@@ -109,5 +97,14 @@ class SaleController extends Controller
             return back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
 
+    }
+    protected function storeProof($file)
+    {
+        $extension = $file->getClientOriginalExtension();
+        $fileName = time() . '_' . Str::random(10) . '.' . $extension;
+
+        $path = $file->storeAs('comprovantes', $fileName, 'public');
+
+        return $fileName;
     }
 }

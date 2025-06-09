@@ -18,7 +18,7 @@
                             $product = $item->product
                         @endphp
                         <h5><i class="icon fas fa-ban"></i> Alerta!</h5>
-                        o item {{ $product->name }} tem apenas {{ $item->quantity }} unidades
+                        o item {{ $product->name }} acabou!
                     </div>
                 @endforeach
 

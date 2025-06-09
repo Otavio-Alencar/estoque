@@ -49,10 +49,10 @@ class MenuController extends Controller
             $inicio = Carbon::create(2025, $mes, 1)->startOfMonth();
             $fim = Carbon::create(2025, $mes, 1)->endOfMonth();
             $labels[] = $inicio->translatedFormat('F');
-            $vendas = DB::table('items')
+            $vendas = DB::table('sales')
                 ->where('admin_id', $userId)
-//                ->whereBetween('sale_date', [$inicio, $fim])
-                ->select(DB::raw('SUM(sale_value * quantity_sold) as total'))
+                ->whereBetween('sale_date', [$inicio, $fim])
+                ->select(DB::raw('SUM(sale_value * quantity) as total'))
                 ->value('total');
 
 

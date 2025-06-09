@@ -30,6 +30,7 @@
                 @include('salesComponents.alerts')
 
             </div>
+            @include('salesComponents.salesTable')
         </div>
     </section>
 </div>

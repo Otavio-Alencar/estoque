@@ -148,18 +148,23 @@ class ProductController extends Controller
         $user = Auth::user();
         $name  = $user->name;
         $request->validate([
-            'codigo' => 'required|string|digits_between:8,14',
+            'codigo' => 'required|string|min:8|max:14',
         ]);
 
         try{
             $item = Item::where('product_code',$request->input('codigo'))->first();
             $product = Product::where('code',$request->input('codigo'))->first();
-            $manufacturer = Manufacturer::where('id',$item->manufacturer_id)->first();
-            if (!$item || !$product || !$manufacturer) {
+            if (!$item || !$product) {
                 return back()->withErrors(['error' => 'Produto não encontrado.']);
             }
+
+            $manufacturer = Manufacturer::find($item->manufacturer_id);
+            if (!$manufacturer) {
+                return back()->withErrors(['error' => 'Fabricante não encontrado.']);
+            }
             $date = Carbon::createFromFormat('Y-m-d', $item->purchase_date)->format('d/m/Y');
-            return view('editProductsForm',['name' => $name,
+            return view('editProductsForm',[
+                'name' => $name,
                 'item' => $item,
                 'manufacturer' => $manufacturer,
                 'product' => $product,
@@ -179,7 +184,7 @@ class ProductController extends Controller
 
         $request->validate([
             'nome' => 'required|string|min:3|max:255',
-            'codigo' => 'required|string|digits_between:8,14',
+            'codigo' => 'required|string|min:8|max:14',
             'data_de_compra' => 'required',
             'valor_de_compra' => 'required|numeric|min:0',
             'valor_de_venda' => 'required|numeric|min:0',
@@ -230,12 +235,13 @@ class ProductController extends Controller
 
 
             // Agora atualizar o código do produto
+            Item::where('product_code', $originalCode)->update(['product_code' => $newCode]);
             $product->update([
                 'code' => $newCode,
                 'name' => $request->input('nome'),
                 'admin_id' => Auth::id(),
             ]);
-            Item::where('product_code', $originalCode)->update(['product_code' => $newCode]);
+
 
             // Converter e validar data
             try {
@@ -289,7 +295,7 @@ class ProductController extends Controller
         $user = Auth::user();
         $name  = $user->name;
         $request->validate([
-            'codigo' => 'required|string|digits_between:8,14',
+            'codigo' => 'required|string|min:8|max:14',
         ]);
         try{
             $item = Item::where('product_code',$request->input('codigo'))->first();

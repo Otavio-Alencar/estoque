@@ -6,5 +6,5 @@
     @include('salesComponents.salesContentWrapper')
     @section('scripts')
         @include("extraComponents.inputMask")
-    @endsections
+    @endsection
 @endsection

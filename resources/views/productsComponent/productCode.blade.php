@@ -17,7 +17,7 @@
     </section>
 
     <!-- Main content -->
-    <form class="content" action="{{ route($route)  }}" method="post">
+    <form class="content" action="{{ route($route)  }}" method="POST">
         @csrf
         <div class="row">
             <div class="col-md-12">

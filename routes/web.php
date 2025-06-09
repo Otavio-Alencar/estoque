@@ -5,21 +5,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
+use Illuminate\Support\Facades\File;
 Route::get('/', [MenuController::class, 'index'])->name('home');
 Route::get('/estoque',[SaleController::class,'sales'])->name('sales');
-Route::get('/produtos', [ProductController::class, 'products'])->name('products');
 Route::post('/estoque',[SaleController::class,'saleRegister'])->name('saleRegister');
-
-Route::get('/produtos/adicionar', [ProductController::class, 'showAddProduct'])->name('addProduct');
-Route::post('/produtos/adicionar', [ProductController::class, 'addProducts'])->name('storeProduct');
-
-
-Route::get('/produtos/editar', [ProductController::class, 'showEditProductCode'])->name('productCodeEdit');
-Route::post('/produtos/editar', [ProductController::class, 'showEditProducts'])->name('productEditForm');
-Route::post('/editar', [ProductController::class, 'editProducts'])->name('productEdit');
-
-Route::get('/produtos/excluir', [ProductController::class, 'showDeleteProductCode'])->name('productCodeDelete');
-Route::post('/produtos/excluir', [ProductController::class, 'deleteProduct'])->name('delete');
+Route::prefix('produtos')->controller(ProductController::class)->group(function () {
+    Route::get('/', 'products')->name('products');
+    Route::get('/adicionar', 'showAddProduct')->name('addProduct');
+    Route::post('/adicionar', 'addProducts')->name('storeProduct');
+    Route::get('/editar', 'showEditProductCode')->name('productCodeEdit');
+    Route::post('/editar/form', 'showEditProducts')->name('productEditForm');
+    Route::post('/editar', 'editProducts')->name('productEdit');
+    Route::get('/excluir', 'showDeleteProductCode')->name('productCodeDelete');
+    Route::post('/excluir', 'deleteProduct')->name('delete');
+});
 
 Route::get('entrar', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('entrar', [LoginController::class, 'login']);
@@ -30,3 +29,13 @@ Route::post('cadastro', [LoginController::class, 'logup']);
 
 Route::get('/auth/google', [LoginController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [LoginController::class, 'handleGoogleCallback']);
+
+Route::get('/comprovante/{filename}', function ($filename) {
+    $path = storage_path('app/public/comprovantes/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404, 'Arquivo não encontrado');
+    }
+
+    return response()->download($path);
+})->name('comprovante.download');

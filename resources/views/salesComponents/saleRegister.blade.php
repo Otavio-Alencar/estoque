@@ -32,16 +32,16 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email do comprador</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="{{ old('email') }}">
                 </div>
 
                 <div class="form-group">
                     <label for="exampleInputPassword1">Quantidade vendida</label>
-                    <input type="number" class="form-control" id="quantidade" name="quantidade" placeholder="Quantidade">
+                    <input type="number" class="form-control" id="quantidade" name="quantidade" placeholder="Quantidade" value="{{ old('quantidade') }}">
                 </div>
                 <div class="form-group">
                     <label for="inputClientCompany">Data de Venda</label>
-                    <input type="text" id="data_de_venda" name="data_de_venda" class="form-control" placeholder="XX/XX/XXXX">
+                    <input type="text" id="data_de_venda" name="data_de_venda" class="form-control" placeholder="XX/XX/XXXX" value="{{ old('data_de_venda') }}">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputFile">comprovante de pagamento</label>

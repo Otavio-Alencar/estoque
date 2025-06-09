@@ -39,7 +39,7 @@
                                     <th>Valor de compra</th>
                                     <th>Valor de venda</th>
                                     <th>Quantidade</th>
-                                    <th>Quantidade vendida</th>
+                                    <th>Vendas Registradas</th>
                                     <th>Código</th>
                                     <th>Fabricante</th>
                                 </tr>

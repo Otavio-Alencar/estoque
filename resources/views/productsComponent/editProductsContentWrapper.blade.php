@@ -17,7 +17,7 @@
     </section>
 
     <!-- Main content -->
-    <form class="content" action="{{ route('productEdit')  }}" method="post">
+    <form class="content" action="{{ route('productEdit') }}" method="POST">
         @csrf
         <div class="row">
             <div class="col-md-12">
