@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ManufacturerController;
 use Illuminate\Support\Facades\File;
 Route::get('/', [MenuController::class, 'index'])->name('home');
 Route::get('/estoque',[SaleController::class,'sales'])->name('sales');
+Route::get('/fornecedores',[ManufacturerController::class,'manufacturers'])->name('manufacturers');
 Route::post('/estoque',[SaleController::class,'saleRegister'])->name('saleRegister');
 Route::prefix('produtos')->controller(ProductController::class)->group(function () {
     Route::get('/', 'products')->name('products');
@@ -39,3 +41,5 @@ Route::get('/comprovante/{filename}', function ($filename) {
 
     return response()->download($path);
 })->name('comprovante.download');
+
+

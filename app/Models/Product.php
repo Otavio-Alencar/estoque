@@ -21,7 +21,7 @@ class Product extends Model
     public function admin():belongsTo{
         return $this->belongsTo(Admin::class);
     }
-    public function Item():hasMany{
+    public function items():hasMany{
         return $this->hasMany(Item::class);
     }
 }

@@ -21,10 +21,10 @@ return new class extends Migration
             $table->date('sale_date');
             $table->string('product_code');
             $table->string('proof');
-            $table->foreign('product_code')->references('code')->on('products');
-            $table->foreignIdFor(Item::class)->references('id')->on('items');
+            $table->foreign('product_code')->references('code')->on('products')->onupdate('cascade')->onDelete('cascade');
+            $table->foreignIdFor(Item::class)->references('id')->on('items')->onDelete('cascade')->onUpdate('cascade');;
             $table->foreignIdFor(Admin::class)->references('id')->on('admin');
-            $table->foreignIdFor(Manufacturer::class)->references('id')->on('manufacturers');
+            $table->foreignIdFor(Manufacturer::class)->references('id')->on('manufacturers')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

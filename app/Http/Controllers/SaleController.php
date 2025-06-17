@@ -16,19 +16,32 @@ use Illuminate\Support\Str;
 class SaleController extends Controller
 {
     public function sales(Request $request){
-        if(!Auth::check()){
+        if (!Auth::check()) {
             return redirect('/entrar');
         }
 
         $user = Auth::user();
         $id = $user->id;
         $name  = $user->name;
-        $items = Item::where('admin_id', $id)->get();
-        $products = Product::where('admin_id', $id)->get();
+
+        $items = Item::where('admin_id', $id)->where('ativo', 1)->get();
+        $products = Product::where('admin_id', $id)
+            ->whereHas('items', function ($query) {
+                $query->where('ativo', 1);
+            })
+            ->get();
+
         $alertItem = $items->whereBetween('quantity', [1, 6]);
         $dangerItem = $items->where('quantity', '==', 0);
         $sales = Sale::all();
-        return view('sales',['name' => $name,'alertItems' => $alertItem,'dangerItems' => $dangerItem,'products' => $products,'sales' => $sales]);
+
+        return view('sales', [
+            'name' => $name,
+            'alertItems' => $alertItem,
+            'dangerItems' => $dangerItem,
+            'products' => $products,
+            'sales' => $sales
+        ]);
     }
     public function saleRegister(Request $request){
         if(!Auth::check()){

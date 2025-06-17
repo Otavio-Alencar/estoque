@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Manufacturer;
 use App\Models\Product;
+use App\Models\Sale;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,7 @@ class ProductController extends Controller
         $user = Auth::user();
         $name  = $user->name;
         $id = Auth::id();
-        $produtos = Item::where('admin_id',$id)->with('product')->with('manufacturer')->get();
+        $produtos = Item::where('admin_id',$id)->where('ativo',1)->with('product')->with('manufacturer')->get();
 
         return view('products',['name' => $name,'produtos' => $produtos]);
     }
@@ -151,28 +152,28 @@ class ProductController extends Controller
             'codigo' => 'required|string|min:8|max:14',
         ]);
 
-        try{
-            $item = Item::where('product_code',$request->input('codigo'))->first();
-            $product = Product::where('code',$request->input('codigo'))->first();
-            if (!$item || !$product) {
-                return back()->withErrors(['error' => 'Produto não encontrado.']);
-            }
+        try {
+            $codigo = $request->input('codigo');
+            $item = Item::where('product_code', $codigo)->firstOrFail();
+            $product = Product::where('code', $codigo)->firstOrFail();
+            $manufacturer = Manufacturer::findOrFail($item->manufacturer_id);
 
-            $manufacturer = Manufacturer::find($item->manufacturer_id);
-            if (!$manufacturer) {
-                return back()->withErrors(['error' => 'Fabricante não encontrado.']);
-            }
             $date = Carbon::createFromFormat('Y-m-d', $item->purchase_date)->format('d/m/Y');
-            return view('editProductsForm',[
+
+            return view('editProductsForm', [
                 'name' => $name,
                 'item' => $item,
                 'manufacturer' => $manufacturer,
                 'product' => $product,
                 'date' => $date,
-                'code' => $request->input('codigo')]);
-        }catch(\Exception $e){
-            return back()->withErrors(['error' => 'Não encontramos um produto com esse codigo']);
+                'code' => $codigo,
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return back()->withErrors(['error' => 'Produto ou fabricante não encontrado.']);
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Erro ao carregar o produto para edição.']);
         }
+
 
     }
 
@@ -212,6 +213,7 @@ class ProductController extends Controller
             }],
         ]);
 
+
         try {
             DB::beginTransaction();
 
@@ -222,6 +224,7 @@ class ProductController extends Controller
             $product = Product::where('code', $originalCode)->firstOrFail();
             $manufacturer = $item->manufacturer;
 
+
             $manufacturer->update([
                 'name' => $request->input('fabricante'),
                 'email' => $request->input('email'),
@@ -231,11 +234,13 @@ class ProductController extends Controller
                 'admin_id' => Auth::id(),
             ]);
 
+
             // Atualizar os items primeiro (trocar product_code)
 
 
             // Agora atualizar o código do produto
             Item::where('product_code', $originalCode)->update(['product_code' => $newCode]);
+
             $product->update([
                 'code' => $newCode,
                 'name' => $request->input('nome'),
@@ -301,6 +306,7 @@ class ProductController extends Controller
             $item = Item::where('product_code',$request->input('codigo'))->first();
             $product = Product::where('code',$request->input('codigo'))->first();
             $manufacturer = Manufacturer::where('id',$item->manufacturer_id)->first();
+            $sales = Sale::where('product_code',$request->input('codigo'))->get();
             if (!$item || !$product || !$manufacturer) {
                 return back()->withErrors(['error' => 'Produto não encontrado.']);
 
@@ -310,6 +316,9 @@ class ProductController extends Controller
             $item->delete();
             $product->delete();
             $manufacturer->delete();
+            foreach ($sales as $sale) {
+                $sale->delete();
+            }
             DB::commit();
             return redirect('/produtos')->with('success', 'Produto excluido com sucesso!');
 
