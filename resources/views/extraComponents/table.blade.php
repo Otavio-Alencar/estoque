@@ -22,6 +22,7 @@
             responsive: true,
             lengthChange: false,
             autoWidth: false,
+            searching: true,
             buttons: ["copy", "csv", "excel", "pdf", "print"],
             dom: '<"row mb-2"<"col-sm-6"B><"col-sm-6 text-right"f>>' + // botões à esquerda, filtro à direita
                 '<"row"<"col-sm-12"tr>>' +

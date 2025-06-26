@@ -1,20 +1,9 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Adicionar Produto</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Adicionar Produto</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+    @include('extraComponents.headerWrapper', [
+    'titlePage' => 'Editar Produto',
+    'page' => 'Editar'
+        ])
 
     <!-- Main content -->
     <form class="content" action="{{ route('productEdit') }}" method="POST">
@@ -52,6 +41,10 @@
                         <div class="form-group">
                             <label for="inputClientCompany">Data de Compra</label>
                             <input type="text" id="data_de_compra" value="{{ $date }}" name="data_de_compra" class="form-control" placeholder="XX/XX/XXXX">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputClientCompany">Data de vencimento</label>
+                            <input type="text" id="data_de_vencimento" value="{{ $dueDate }}" name="data_de_vencimento" class="form-control" placeholder="XX/XX/XXXX">
                         </div>
                         <div class="form-group">
                             <label for="inputClientCompany">Valor de compra</label>

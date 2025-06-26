@@ -37,7 +37,19 @@
                 @endforeach
 
             @endif
+            @if($expiredItems)
+                @foreach($expiredItems as $item)
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        @php
+                            $product = $item->product
+                        @endphp
+                        <h5><i class="icon fas fa-ban"></i> Cuidado!</h5>
+                        o item {{ $product->name }} passou da data de validade
+                    </div>
+                @endforeach
 
+            @endif
 
 
 

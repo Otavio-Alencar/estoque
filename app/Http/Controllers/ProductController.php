@@ -40,14 +40,17 @@ class ProductController extends Controller
         return view('addProducts',['name' => $name]);
     }
 
-    public function addProducts(Request $request){
-        if(!Auth::check()){
+    public function addProducts(Request $request)
+    {
+        if (!Auth::check()) {
             return redirect('/entrar');
         }
+
         $request->validate([
             'nome' => 'required|string|min:3|max:255',
             'codigo' => 'required|string|digits_between:8,14|unique:products,code',
-            'data_de_compra' => 'required',
+            'data_de_compra' => 'required|date_format:d/m/Y',
+            'data_de_vencimento' => 'nullable|date_format:d/m/Y|after:today',
             'valor_de_compra' => 'required|numeric|min:0',
             'valor_de_venda' => 'required|numeric|min:0',
             'quantidade' => 'required|integer|min:1',
@@ -62,7 +65,6 @@ class ProductController extends Controller
                 }
                 for ($t = 12; $t < 14; $t++) {
                     $d = 0;
-                    $c = 0;
                     for ($m = $t - 7, $i = 0; $i < $t; $i++) {
                         $d += $cnpj[$i] * $m--;
                         if ($m < 2) $m = 9;
@@ -75,8 +77,7 @@ class ProductController extends Controller
             }],
         ]);
 
-
-        try{
+        try {
             DB::beginTransaction();
 
             $manufacturer = Manufacturer::create([
@@ -87,25 +88,17 @@ class ProductController extends Controller
                 'cnpj' => $request->input('cnpj'),
                 'admin_id' => Auth::id(),
             ]);
+
             $product = Product::create([
                 'code' => $request->input('codigo'),
                 'name' => $request->input('nome'),
                 'admin_id' => Auth::id(),
             ]);
-            $date = $request->input('data_de_compra');
 
-            $data = Carbon::createFromFormat('d/m/Y', $date);
-
-            if (!$data || $data->format('d/m/Y') !== $date) {
-                DB::rollBack();
-                return back()->withErrors(['error' => 'Data inválida.']);
+            $purchaseDate = Carbon::createFromFormat('d/m/Y', $request->input('data_de_compra'))->format('Y-m-d');
+            if($request->input('data_de_vencimento')){
+                $dueDate = Carbon::createFromFormat('d/m/Y', $request->input('data_de_vencimento'))->format('Y-m-d');
             }
-
-            if ($data->isAfter(Carbon::today())) {
-                DB::rollBack();
-                return back()->withInput()->withErrors(['error' => 'A data deve ser anterior à data atual.']);
-            }
-            $dataFormat = $data->format('Y-m-d');
 
 
             $item = Item::create([
@@ -113,22 +106,20 @@ class ProductController extends Controller
                 'purchase_value' => $request->input('valor_de_compra'),
                 'sale_value' => $request->input('valor_de_venda'),
                 'product_code' => $product->code,
-                'purchase_date' => $dataFormat,
+                'purchase_date' => $purchaseDate,
                 'product_id' => $product->id,
-                'due_date' => Carbon::now()->format('Y-m-d'),
+                'due_date' => $dueDate ?? null,
                 'ativo' => 1,
                 'manufacturer_id' => $manufacturer->id,
                 'admin_id' => Auth::id(),
             ]);
 
             DB::commit();
-            return redirect('/produtos')->with('success', 'Produto atualizado com sucesso!');
-        }catch(\Exception $e){
+            return redirect('/produtos')->with('success', 'Produto cadastrado com sucesso!');
+        } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => $e->getMessage()]);
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
-
-
     }
 
     public function showEditProductCode(Request $request){
@@ -159,13 +150,14 @@ class ProductController extends Controller
             $manufacturer = Manufacturer::findOrFail($item->manufacturer_id);
 
             $date = Carbon::createFromFormat('Y-m-d', $item->purchase_date)->format('d/m/Y');
-
+            $dueDate = Carbon::createFromFormat('Y-m-d', $item->due_date)->format('d/m/Y');
             return view('editProductsForm', [
                 'name' => $name,
                 'item' => $item,
                 'manufacturer' => $manufacturer,
                 'product' => $product,
                 'date' => $date,
+                'dueDate' => $dueDate,
                 'code' => $codigo,
             ]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
@@ -186,7 +178,8 @@ class ProductController extends Controller
         $request->validate([
             'nome' => 'required|string|min:3|max:255',
             'codigo' => 'required|string|min:8|max:14',
-            'data_de_compra' => 'required',
+            'data_de_compra' => 'required|date_format:d/m/Y',
+            'data_de_vencimento' => 'nullable|date_format:d/m/Y|after:today',
             'valor_de_compra' => 'required|numeric|min:0',
             'valor_de_venda' => 'required|numeric|min:0',
             'quantidade' => 'required|integer|min:1',
@@ -213,7 +206,6 @@ class ProductController extends Controller
             }],
         ]);
 
-
         try {
             DB::beginTransaction();
 
@@ -224,7 +216,7 @@ class ProductController extends Controller
             $product = Product::where('code', $originalCode)->firstOrFail();
             $manufacturer = $item->manufacturer;
 
-
+            // Atualizar fabricante
             $manufacturer->update([
                 'name' => $request->input('fabricante'),
                 'email' => $request->input('email'),
@@ -234,41 +226,53 @@ class ProductController extends Controller
                 'admin_id' => Auth::id(),
             ]);
 
-
-            // Atualizar os items primeiro (trocar product_code)
-
-
-            // Agora atualizar o código do produto
+            // Atualizar o código do item antes do produto (evita FK error)
             Item::where('product_code', $originalCode)->update(['product_code' => $newCode]);
 
+            // Atualizar produto
             $product->update([
                 'code' => $newCode,
                 'name' => $request->input('nome'),
                 'admin_id' => Auth::id(),
             ]);
 
-
-            // Converter e validar data
+            // Converter e validar data de compra
             try {
                 $data = Carbon::createFromFormat('d/m/Y', $request->input('data_de_compra'));
             } catch (\Exception $e) {
                 DB::rollBack();
-                return back()->withErrors(['error' => 'Data inválida.']);
+                return back()->withInput()->withErrors(['error' => 'Data de compra inválida.']);
             }
 
             if ($data->isAfter(Carbon::today())) {
                 DB::rollBack();
-                return back()->withInput()->withErrors(['error' => 'A data deve ser anterior à data atual.']);
+                return back()->withInput()->withErrors(['error' => 'A data de compra deve ser anterior à data atual.']);
             }
 
-            // Atualizar os demais dados do item
+            // Converter data de vencimento se houver
+            $dueDateFormat = null;
+            if ($request->filled('data_de_vencimento')) {
+                try {
+                    $dueDate = Carbon::createFromFormat('d/m/Y', $request->input('data_de_vencimento'));
+                    if ($dueDate->isBefore(Carbon::today())) {
+                        DB::rollBack();
+                        return back()->withInput()->withErrors(['error' => 'A data de vencimento deve ser posterior à data atual.']);
+                    }
+                    $dueDateFormat = $dueDate->format('Y-m-d');
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    return back()->withInput()->withErrors(['error' => 'Data de vencimento inválida.']);
+                }
+            }
+
+            // Atualizar item
             $item->update([
                 'quantity' => $request->input('quantidade'),
                 'quantity_sold' => 0,
                 'purchase_value' => $request->input('valor_de_compra'),
                 'sale_value' => $request->input('valor_de_venda'),
                 'purchase_date' => $data->format('Y-m-d'),
-                'due_date' => Carbon::now()->format('Y-m-d'),
+                'due_date' => $dueDateFormat,
                 'ativo' => 1,
                 'manufacturer_id' => $manufacturer->id,
                 'admin_id' => Auth::id(),
@@ -278,20 +282,10 @@ class ProductController extends Controller
             return redirect('/produtos')->with('success', 'Produto editado com sucesso!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => $e->getMessage()]);
+            return back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
-    public function showDeleteProductCode(Request $request){
-        if(!Auth::check()){
-            return redirect('/entrar');
-        }
-        $user = Auth::user();
-        $name  = $user->name;
-        return view('deleteProducts',['name' => $name,'titulo' => 'Excluir','route' => 'delete']);
-
-
-    }
 
     public function deleteProduct(Request $request){
         if(!Auth::check()){

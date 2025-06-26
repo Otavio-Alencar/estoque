@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('purchase_date');
 
             $table->string('product_code');
-            $table->date('due_date');
+            $table->date('due_date')->nullable();
             $table->integer('ativo');
             $table->foreign('product_code')->references('code')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignIdFor(Manufacturer::class)->references('id')->on('manufacturers')->onDelete('cascade');

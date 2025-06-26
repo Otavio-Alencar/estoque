@@ -1,4 +1,8 @@
 <div class="content-wrapper">
+    @include('extraComponents.headerWrapper', [
+    'titlePage' => 'Fornecedores',
+    'page' => 'Fornecedores'
+        ])
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Fornecedores</h3>

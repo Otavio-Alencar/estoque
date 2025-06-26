@@ -4,6 +4,6 @@
     $(document).ready(function(){
         $('input[name="manufacturer_cnpj"]').mask('00.000.000/0000-00');
         $('input[name="valor_de_compra"], input[name="valor_de_venda"]').mask('000000.00', {reverse: true});
-        $('input[name="data_de_compra"],input[name="data_de_venda"]').mask('00/00/0000');
+        $('input[name="data_de_compra"],input[name="data_de_venda"],input[name="data_de_vencimento"]').mask('00/00/0000');
     });
 </script>

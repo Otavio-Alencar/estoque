@@ -33,9 +33,12 @@
     @include("baseLayout.header")
     @include("baseLayout.mainSidebar")
 
+
     @yield('content')
+
     @include("baseLayout.footer")
 </div>
 @yield('scripts')
 </body>
 </html>
+

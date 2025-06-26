@@ -2,7 +2,7 @@
 @section('title','Cadastro')
 @section('content')
         <div class="card-body">
-            <p class="login-box-msg">Register a new membership</p>
+            <p class="login-box-msg">Cadastrar novo usuário</p>
 
             <form action="{{ route('logup')  }}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -56,32 +56,25 @@
                         </ul>
                     </div>
                 @endif
-                <div class="row">
-                    <div class="col-8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" id="agreeTerms" name="terms" value="agree">
-                            <label for="agreeTerms">
-                                I agree to the <a href="#">terms</a>
-                            </label>
-                        </div>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-4">
+
+
+
+                    <div class="col-12">
                         <button type="submit" class="btn btn-primary btn-block">Register</button>
+
                     </div>
-                    <!-- /.col -->
+                <div class="social-auth-links text-center col-12">
+
+                    <a href="{{ url('/auth/google') }}" class="btn btn-block btn-danger">
+                        <i class="fab fa-google-plus mr-2"></i>
+                        Sign up using Google+
+                    </a>
                 </div>
             </form>
 
-            <div class="social-auth-links text-center">
 
-                <a href="{{ url('/auth/google') }}" class="btn btn-block btn-danger">
-                    <i class="fab fa-google-plus mr-2"></i>
-                    Sign up using Google+
-                </a>
-            </div>
 
-            <a href="{{ route('login') }}" class="text-center">I already have a membership</a>
+            <a href="{{ route('login') }}" class="text-center">Eu já tenho uma conta</a>
         </div>
         <!-- /.form-box -->
 

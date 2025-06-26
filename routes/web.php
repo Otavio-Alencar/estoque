@@ -6,11 +6,15 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ManufacturerController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\File;
 Route::get('/', [MenuController::class, 'index'])->name('home');
-Route::get('/estoque',[SaleController::class,'sales'])->name('sales');
-Route::get('/fornecedores',[ManufacturerController::class,'manufacturers'])->name('manufacturers');
-Route::post('/estoque',[SaleController::class,'saleRegister'])->name('saleRegister');
+
+
+
+
+
+
 Route::prefix('produtos')->controller(ProductController::class)->group(function () {
     Route::get('/', 'products')->name('products');
     Route::get('/adicionar', 'showAddProduct')->name('addProduct');
@@ -22,9 +26,20 @@ Route::prefix('produtos')->controller(ProductController::class)->group(function 
     Route::post('/excluir', 'deleteProduct')->name('delete');
 });
 
+Route::prefix('estoque')->controller(SaleController::class)->group(function(){
+    Route::get('/',[SaleController::class,'sales'])->name('sales');
+    Route::post('/',[SaleController::class,'saleRegister'])->name('saleRegister');
+});
+
+Route::get('/fornecedores',[ManufacturerController::class,'manufacturers'])->name('manufacturers');
+
+Route::get('/perfil',[ProfileController::class,'getProfile'])->name('profile');
+Route::post('/perfil/editar',[ProfileController::class,'updateProfile'])->name('editProfile');
+
 Route::get('entrar', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('entrar', [LoginController::class, 'login']);
 
+Route::post('/sair', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('cadastro', [LoginController::class, 'showLogupForm'])->name('logup');
 Route::post('cadastro', [LoginController::class, 'logup']);

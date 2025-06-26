@@ -1,20 +1,9 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Produtos</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Produtos</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
+    @include('extraComponents.headerWrapper', [
+    'titlePage' => 'Produtos',
+    'page' => 'Produtos'
+        ])
 
     <!-- Main content -->
     <section class="content">
@@ -39,6 +28,7 @@
                                     <th>Valor de compra</th>
                                     <th>Valor de venda</th>
                                     <th>Quantidade</th>
+                                    <th>Vencimento</th>
                                     <th>Vendas Registradas</th>
                                     <th>Código</th>
                                     <th>Fabricante</th>
@@ -51,6 +41,7 @@
                                         <td>{{ $item->purchase_value }}</td>
                                         <td>{{ $item->sale_value }}</td>
                                         <td>{{ $item->quantity }}</td>
+                                        <td>{{ $item->due_date ?? 'Sem vencimento' }}</td>
                                         <td>{{ $item->quantity_sold }}</td>
                                         <td>{{ $item->product_code }}</td>
                                         <td>{{ $item->manufacturer->name }}</td>

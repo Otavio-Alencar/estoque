@@ -30,7 +30,7 @@ class SaleController extends Controller
                 $query->where('ativo', 1);
             })
             ->get();
-
+        $expiredItem = Item::where('due_date', '<', Carbon::now())->get();
         $alertItem = $items->whereBetween('quantity', [1, 6]);
         $dangerItem = $items->where('quantity', '==', 0);
         $sales = Sale::all();
@@ -40,7 +40,8 @@ class SaleController extends Controller
             'alertItems' => $alertItem,
             'dangerItems' => $dangerItem,
             'products' => $products,
-            'sales' => $sales
+            'sales' => $sales,
+            'expiredItems' => $expiredItem,
         ]);
     }
     public function saleRegister(Request $request){
